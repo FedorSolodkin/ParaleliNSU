@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.10)
+project(SinArray)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+option( USE_FLOAT "Use float instead of double" OFF)
+
+add_executable(sin_app main.cpp)
+if(USE_FLOAT)
+	target_compile_definitions(sin_app PRIVATE USE_FLOAT)
+endif()
