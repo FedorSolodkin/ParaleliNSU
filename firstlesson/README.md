@@ -16,7 +16,7 @@
 
 ```bash
 git clone <ссылка_на_репозиторий>
-cd SinArray
+cd ParaleliNSU/firstlesson
 ```
 
 ### 2. Создание директории сборки
