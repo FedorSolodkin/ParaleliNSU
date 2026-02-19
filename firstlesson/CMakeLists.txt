@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option( USE_FLOAT "Use float instead of double" OFF)
 
-add_executable(sin_app main.cpp)
+add_executable(sin_app first.cpp)
 if(USE_FLOAT)
 	target_compile_definitions(sin_app PRIVATE USE_FLOAT)
 endif()
