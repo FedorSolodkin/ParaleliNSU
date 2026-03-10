@@ -1,0 +1,64 @@
+=== Matrix-Vector Multiplication Benchmarks ===
+Date: Thu Mar  5 04:56:09 UTC 2026
+
+=== Testing N=20000 ===
+1 thread: 0.630149s
+2 threads: 0.302258s (speedup: 2.08x)
+4 threads: 0.157308s (speedup: 4.00x)
+7 threads: 0.091677s (speedup: 6.87x)
+8 threads: 0.080722s (speedup: 7.80x)
+16 threads: 0.045295s (speedup: 13.91x)
+20 threads: 0.045732s (speedup: 13.77x)
+40 threads: 0.046688s (speedup: 13.49x)
+
+=== Testing N=40000 ===
+1 thread: 2.338488s
+2 threads: 1.288063s (speedup: 1.81x)
+4 threads: 0.891800s (speedup: 2.62x)
+7 threads: 0.401414s (speedup: 5.82x)
+8 threads: 0.358982s (speedup: 6.51x)
+16 threads: 0.217854s (speedup: 10.73x)
+20 threads: 0.184615s (speedup: 12.66x)
+40 threads: 0.192635s (speedup: 12.13x)
+
+=== Results saved to results_20260305_045609.csv ===
+=== Matrix-Vector Multiplication Benchmarks ===
+Date: Thu Mar  5 04:56:09 UTC 2026
+
+=== Testing N=20000 ===
+threads,time,speedup
+1 thread: 0.630149s
+1,0.630149,1.0
+2 threads: 0.302258s (speedup: 2.08x)
+2,0.302258,2.08
+4 threads: 0.157308s (speedup: 4.00x)
+4,0.157308,4.00
+7 threads: 0.091677s (speedup: 6.87x)
+7,0.091677,6.87
+8 threads: 0.080722s (speedup: 7.80x)
+8,0.080722,7.80
+16 threads: 0.045295s (speedup: 13.91x)
+16,0.045295,13.91
+20 threads: 0.045732s (speedup: 13.77x)
+20,0.045732,13.77
+40 threads: 0.046688s (speedup: 13.49x)
+40,0.046688,13.49
+
+=== Testing N=40000 ===
+threads,time,speedup
+1 thread: 2.338488s
+1,2.338488,1.0
+2 threads: 1.288063s (speedup: 1.81x)
+2,1.288063,1.81
+4 threads: 0.891800s (speedup: 2.62x)
+4,0.891800,2.62
+7 threads: 0.401414s (speedup: 5.82x)
+7,0.401414,5.82
+8 threads: 0.358982s (speedup: 6.51x)
+8,0.358982,6.51
+16 threads: 0.217854s (speedup: 10.73x)
+16,0.217854,10.73
+20 threads: 0.184615s (speedup: 12.66x)
+20,0.184615,12.66
+40 threads: 0.192635s (speedup: 12.13x)
+40,0.192635,12.13
