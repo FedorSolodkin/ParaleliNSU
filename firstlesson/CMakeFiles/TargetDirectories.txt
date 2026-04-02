@@ -1,0 +1,3 @@
+/home/fedor/Palal/ParaleliNSU/firstlesson/CMakeFiles/sin_app.dir
+/home/fedor/Palal/ParaleliNSU/firstlesson/CMakeFiles/edit_cache.dir
+/home/fedor/Palal/ParaleliNSU/firstlesson/CMakeFiles/rebuild_cache.dir
