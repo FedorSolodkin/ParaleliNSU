@@ -1,0 +1,8 @@
+N=14000, variant=2, threads=1, time=30.309753, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=2, time=15.769328, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=4, time=7.896904, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=7, time=4.608380, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=8, time=4.040970, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=16, time=2.120509, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=20, time=1.775858, iterations=144, max_error=0.000000
+N=14000, variant=2, threads=40, time=1.010764, iterations=144, max_error=0.000000
