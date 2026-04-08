@@ -3,6 +3,9 @@
 """
 Скрипт для генерации PDF отчёта по второму уроку параллельного программирования
 Включает: Task 1, Task 2, Lab 2
+ИСПРАВЛЕНИЯ: 
+1. Добавлена поддержка кириллицы через шрифт DejaVuSans.
+2. Изменен путь сохранения файла на текущую директорию.
 """
 
 from reportlab.lib import colors
@@ -16,6 +19,9 @@ from reportlab.graphics.charts.linecharts import HorizontalLineChart
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.lib import colors
 from reportlab.graphics import renderPDF
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
 import io
 import matplotlib
 matplotlib.use('Agg')
@@ -23,6 +29,20 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.lines import Line2D
 import numpy as np
+import os
+
+# --- НАСТРОЙКА ШРИФТОВ ДЛЯ КИРИЛЛИЦЫ ---
+# Путь к шрифту на сервере (найден через fc-list)
+FONT_PATH = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+FONT_BOLD_PATH = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+
+try:
+    pdfmetrics.registerFont(TTFont('DejaVuSans', FONT_PATH))
+    pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', FONT_BOLD_PATH))
+    print(f"Шрифт успешно загружен из {FONT_PATH}")
+except Exception as e:
+    print(f"Ошибка загрузки шрифта: {e}")
+    print("Убедитесь, что пакет fonts-dejavu-core установлен.")
 
 def calculate_speedup(base_time, times):
     """Расчёт ускорения относительно базового времени"""
@@ -37,7 +57,7 @@ task1_data = {
                  0.045732, 0.045876, 0.046012, 0.046123, 0.046234, 0.046345, 0.046432, 0.046543, 0.046612, 
                  0.046654, 0.046676, 0.046688, 0.046698, 0.046708, 0.046718, 0.046728, 0.046738, 0.046748, 
                  0.046758, 0.046768, 0.046778, 0.046788],
-        'speedup': []  # Будет вычислено автоматически
+        'speedup': []
     },
     'N=40000': {
         'threads': list(range(1, 41)),
@@ -46,7 +66,7 @@ task1_data = {
                  0.184615, 0.185123, 0.186234, 0.187345, 0.188456, 0.189567, 0.190678, 0.191234, 0.191789, 
                  0.192123, 0.192456, 0.192635, 0.192789, 0.192912, 0.193012, 0.193112, 0.193212, 0.193312, 
                  0.193412, 0.193512, 0.193612, 0.193712],
-        'speedup': []  # Будет вычислено автоматически
+        'speedup': []
     }
 }
 
@@ -63,7 +83,7 @@ task2_data = {
              0.014555, 0.014234, 0.013876, 0.013543, 0.013234, 0.012987, 0.012765, 0.012543, 0.012345, 
              0.012123, 0.011987, 0.009907, 0.009765, 0.009654, 0.009543, 0.009456, 0.009376, 0.009298, 
              0.009234, 0.009176, 0.009123, 0.009076],
-    'speedup': []  # Будет вычислено автоматически
+    'speedup': []
 }
 
 # Вычисляем speedup для Task 2
@@ -79,7 +99,7 @@ lab2_data = {
                  1.862307, 1.798765, 1.723456, 1.654321, 1.598765, 1.543210, 1.498765, 1.454321, 1.412345, 
                  1.376543, 1.343210, 1.124080, 1.098765, 1.076543, 1.054321, 1.043210, 1.032109, 1.021098, 
                  1.012345, 1.005432, 0.998765, 0.992345],
-        'speedup': []  # Будет вычислено автоматически
+        'speedup': []
     },
     'variant_2': {
         'threads': list(range(1, 41)),
@@ -88,7 +108,7 @@ lab2_data = {
                  1.775858, 1.698765, 1.623456, 1.554321, 1.498765, 1.443210, 1.398765, 1.354321, 1.312345, 
                  1.276543, 1.243210, 1.010764, 0.987654, 0.965432, 0.943210, 0.932109, 0.921098, 0.910987, 
                  0.902345, 0.895432, 0.888765, 0.882345],
-        'speedup': []  # Будет вычислено автоматически
+        'speedup': []
     }
 }
 
@@ -212,7 +232,7 @@ def create_task2_plots():
     
     # Найдём точку значительного улучшения
     improvements = [(time[i-1] - time[i])/time[i-1]*100 for i in range(1, len(time))]
-    best_improvement_idx = improvements.index(max(improvements[:4])) + 1  # Первые 4 точки
+    best_improvement_idx = improvements.index(max(improvements[:4])) + 1
     
     ax.annotate(f'Макс. улучшение\n{improvements[best_improvement_idx-1]:.1f}%', 
                 xy=(threads[best_improvement_idx], time[best_improvement_idx]),
@@ -321,18 +341,22 @@ def generate_pdf(filename='second_lesson_report.pdf'):
                            topMargin=2*cm, bottomMargin=2*cm)
     
     styles = getSampleStyleSheet()
+    
+    # Стили с поддержкой кириллицы (используем зарегистрированный шрифт)
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
+        fontName='DejaVuSans-Bold',
         fontSize=18,
         textColor=colors.darkblue,
         spaceAfter=30,
-        alignment=1  # Center
+        alignment=1
     )
     
     heading_style = ParagraphStyle(
         'CustomHeading',
         parent=styles['Heading2'],
+        fontName='DejaVuSans-Bold',
         fontSize=14,
         textColor=colors.darkblue,
         spaceAfter=12,
@@ -342,6 +366,7 @@ def generate_pdf(filename='second_lesson_report.pdf'):
     subheading_style = ParagraphStyle(
         'CustomSubHeading',
         parent=styles['Heading3'],
+        fontName='DejaVuSans-Bold',
         fontSize=12,
         textColor=colors.darkgreen,
         spaceAfter=10,
@@ -351,6 +376,7 @@ def generate_pdf(filename='second_lesson_report.pdf'):
     normal_style = ParagraphStyle(
         'CustomNormal',
         parent=styles['Normal'],
+        fontName='DejaVuSans',
         fontSize=11,
         leading=14,
         spaceAfter=10
@@ -393,12 +419,13 @@ def generate_pdf(filename='second_lesson_report.pdf'):
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
     ]))
     story.append(table_t1_20k)
     story.append(Spacer(1, 0.3*inch))
@@ -416,12 +443,13 @@ def generate_pdf(filename='second_lesson_report.pdf'):
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
     ]))
     story.append(table_t1_40k)
     story.append(Spacer(1, 0.3*inch))
@@ -488,12 +516,13 @@ def generate_pdf(filename='second_lesson_report.pdf'):
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('BACKGROUND', (0, 1), (-1, -1), colors.lightgreen),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
     ]))
     story.append(table_t2)
     story.append(Spacer(1, 0.3*inch))
@@ -560,12 +589,13 @@ def generate_pdf(filename='second_lesson_report.pdf'):
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('BACKGROUND', (0, 1), (-1, -1), colors.lightblue),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
     ]))
     story.append(table_l2_v1)
     story.append(Spacer(1, 0.3*inch))
@@ -583,12 +613,13 @@ def generate_pdf(filename='second_lesson_report.pdf'):
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('BACKGROUND', (0, 1), (-1, -1), colors.lavender),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
     ]))
     story.append(table_l2_v2)
     story.append(Spacer(1, 0.3*inch))
@@ -673,7 +704,8 @@ def generate_pdf(filename='second_lesson_report.pdf'):
     
     # Построение документа
     doc.build(story)
-    print(f"PDF отчёт успешно создан: {filename}")
+    print(f"PDF отчёт успешно создан: {os.path.abspath(filename)}")
 
 if __name__ == '__main__':
-    generate_pdf('/workspace/secondlesson/second_lesson_report.pdf')
+    # ИЗМЕНЕНО: Сохраняем файл в текущей директории, а не в корне системы
+    generate_pdf('second_lesson_report.pdf')
