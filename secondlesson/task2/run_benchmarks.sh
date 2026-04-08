@@ -1,10 +1,9 @@
 #!/bin/bash
 
 NSTEPS=40000000
-THREADS=(1 2 4 7 8 16 20 40)
-RESULTS="integration_results.csv"
+RESULTS="integration_results_all_threads.csv"
 
-echo "=== Numerical Integration Benchmarks ==="
+echo "=== Numerical Integration Benchmarks (1-40 threads) ==="
 echo "Number of steps: $NSTEPS"
 echo ""
 
@@ -18,8 +17,8 @@ fi
 echo "threads,time,speedup" > $RESULTS
 
 # Базовый замер (1 поток)
-echo "Running 1 thread..."
-T1=$(./main $NSTEPS 1 2>&1 | grep "Time:" | awk '{print $2}')
+./main $NSTEPS 1 > /tmp/t1.txt 2>&1
+T1=$(grep "Time:" /tmp/t1.txt | awk '{print $2}')
 
 if [ -z "$T1" ]; then
     echo "ERROR: Could not extract time! Check program output."
@@ -30,12 +29,10 @@ fi
 echo "1 thread: ${T1}s"
 echo "1,$T1,1.0" >> $RESULTS
 
-# Остальные потоки
-for p in "${THREADS[@]}"; do
-    [ "$p" -eq 1 ] && continue
-    
-    echo "Running $p threads..."
-    Tp=$(./main $NSTEPS $p 2>&1 | grep "Time:" | awk '{print $2}')
+# Остальные потоки от 2 до 40
+for p in {2..40}; do
+    ./main $NSTEPS $p > /tmp/tp.txt 2>&1
+    Tp=$(grep "Time:" /tmp/tp.txt | awk '{print $2}')
     
     if [ -n "$Tp" ]; then
         Speedup=$(echo "scale=2; $T1 / $Tp" | bc)
