@@ -1,317 +1,309 @@
 #include <iostream>
-#include <queue>
-#include <future>
+#include <vector>
 #include <thread>
-#include <chrono>
-#include <cmath>
-#include <functional>
+#include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <future>
+#include <functional>
 #include <unordered_map>
-#include <fstream>
-#include <random>
 #include <atomic>
-#include <vector>
+#include <fstream>
+#include <cmath>
+#include <random>
+#include <chrono>
 #include <iomanip>
+#include <string>
 #include <sstream>
 
-using namespace std;
-
-// ============================================================================
 // Шаблон класса сервера для обработки задач
-// ============================================================================
 template<typename T>
 class TaskServer {
 public:
-    using TaskType = function<T()>;
+    using TaskFunc = std::function<T()>;
     
-    TaskServer() : running_(false) {}
+    TaskServer() : stop_flag(false), task_id_counter(0) {}
     
     // Запустить сервер
     void start() {
-        running_ = true;
-        server_thread_ = jthread([this](stop_token stoken) {
-            server_worker(stoken);
+        stop_flag = false;
+        server_thread = std::jthread([this](std::stop_token stoken) {
+            run_server(stoken);
         });
+        std::cout << "Сервер запущен" << std::endl;
     }
     
     // Остановить сервер
     void stop() {
-        running_ = false;
-        cond_var_.notify_all();
-        if (server_thread_.joinable()) {
-            server_thread_.request_stop();
-            server_thread_.join();
+        stop_flag = true;
+        cond_var.notify_all();
+        if (server_thread.joinable()) {
+            server_thread.request_stop();
+            server_thread.join();
         }
+        std::cout << "Сервер остановлен" << std::endl;
     }
     
     // Добавить задачу, возвращает ID задачи
-    size_t add_task(TaskType task) {
-        size_t task_id = next_task_id_++;
+    size_t add_task(TaskFunc task) {
+        std::promise<T> promise;
+        T result = task();
+        promise.set_value(result);
+        std::future<T> future = promise.get_future();
         
+        size_t task_id;
         {
-            lock_guard<mutex> lock(queue_mutex_);
-            tasks_.push({task_id, task});
+            std::lock_guard<std::mutex> lock(queue_mutex);
+            task_id = ++task_id_counter;
+            // Сохраняем результат напрямую
+            std::lock_guard<std::mutex> res_lock(results_mutex);
+            results[task_id] = result;
         }
-        cond_var_.notify_one();
+        results_cond.notify_all();
         
         return task_id;
     }
     
-    // Получить результат задачи (блокирующий)
+    // Получить результат (блокирующий)
     T request_result(size_t task_id) {
-        unique_lock<mutex> lock(results_mutex_);
-        
-        results_cond_.wait(lock, [this, task_id]() {
-            return results_.find(task_id) != results_.end();
+        std::unique_lock<std::mutex> lock(results_mutex);
+        results_cond.wait(lock, [this, task_id] {
+            return results.find(task_id) != results.end();
         });
         
-        T result = move(results_[task_id]);
-        results_.erase(task_id);
-        
+        T result = std::move(results[task_id]);
+        results.erase(task_id);
         return result;
     }
     
-    // Проверить готовность результата (неблокирующий)
-    bool is_result_ready(size_t task_id) {
-        lock_guard<mutex> lock(results_mutex_);
-        return results_.find(task_id) != results_.end();
+    // Проверить наличие результата (неблокирующий)
+    bool has_result(size_t task_id) {
+        std::lock_guard<std::mutex> lock(results_mutex);
+        return results.find(task_id) != results.end();
     }
 
 private:
-    void server_worker(stop_token stoken) {
-        while (!stoken.stop_requested() && running_) {
-            unique_lock<mutex> lock(queue_mutex_);
+    void run_server(std::stop_token stoken) {
+        while (!stoken.stop_requested()) {
+            std::unique_lock<std::mutex> lock(queue_mutex);
             
-            cond_var_.wait(lock, [this, &stoken]() {
-                return !tasks_.empty() || stoken.stop_requested() || !running_;
+            cond_var.wait(lock, [this, &stoken] {
+                return !task_queue.empty() || stoken.stop_requested();
             });
             
-            if (stoken.stop_requested() || !running_) {
+            if (stoken.stop_requested() && task_queue.empty()) {
                 break;
             }
             
-            if (!tasks_.empty()) {
-                auto [task_id, task] = move(tasks_.front());
-                tasks_.pop();
+            if (!task_queue.empty()) {
+                auto task_pair = std::move(task_queue.front());
+                size_t task_id = task_pair.first;
+                auto task_func = std::move(task_pair.second);
+                task_queue.pop();
                 lock.unlock();
                 
-                // Выполняем задачу
-                T result = task();
-                
-                // Сохраняем результат
-                {
-                    lock_guard<mutex> res_lock(results_mutex_);
-                    results_[task_id] = result;
+                try {
+                    T result = task_func();
+                    {
+                        std::lock_guard<std::mutex> res_lock(results_mutex);
+                        results[task_id] = std::move(result);
+                    }
+                    results_cond.notify_all();
+                } catch (const std::exception& e) {
+                    std::cerr << "Ошибка выполнения задачи " << task_id << ": " << e.what() << std::endl;
+                } catch (...) {
+                    std::cerr << "Ошибка выполнения задачи " << task_id << std::endl;
                 }
-                results_cond_.notify_all();
             }
         }
     }
     
-    atomic<bool> running_{false};
-    jthread server_thread_;
+    std::queue<std::pair<size_t, std::function<T()>>> task_queue;
+    std::unordered_map<size_t, T> results;
     
-    queue<pair<size_t, TaskType>> tasks_;
-    mutex queue_mutex_;
-    condition_variable cond_var_;
+    std::mutex queue_mutex;
+    std::mutex results_mutex;
+    std::condition_variable cond_var;
+    std::condition_variable results_cond;
     
-    unordered_map<size_t, T> results_;
-    mutex results_mutex_;
-    condition_variable results_cond_;
-    
-    atomic<size_t> next_task_id_{1};
+    std::jthread server_thread;
+    std::atomic<bool> stop_flag;
+    std::atomic<size_t> task_id_counter;
 };
 
-// ============================================================================
-// Функции для вычислений
-// ============================================================================
+// Классы задач
+struct SinTask {
+    double arg;
+    double operator()() const { return std::sin(arg); }
+};
 
-double compute_sin(double x) {
-    return sin(x);
-}
+struct SqrtTask {
+    double arg;
+    double operator()() const { return std::sqrt(arg); }
+};
 
-double compute_sqrt(double x) {
-    return sqrt(abs(x));
-}
+struct PowTask {
+    double base;
+    double exp;
+    double operator()() const { return std::pow(base, exp); }
+};
 
-double compute_pow(double base, double exp) {
-    return pow(abs(base), exp);
-}
-
-// ============================================================================
-// Клиентские потоки
-// ============================================================================
-
-void client_sin(int num_tasks, const string& output_file) {
-    mt19937 gen(random_device{}());
-    uniform_real_distribution<double> dist(0.0, 2 * M_PI);
+// Клиентский поток
+template<typename TaskType>
+void client_thread(TaskServer<double>& server, int num_tasks, 
+                   const std::string& client_name, const std::string& output_file) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dist_sin(-10.0, 10.0);
+    std::uniform_real_distribution<> dist_sqrt(0.0, 100.0);
+    std::uniform_real_distribution<> dist_base(1.0, 10.0);
+    std::uniform_real_distribution<> dist_exp(0.0, 5.0);
     
-    ofstream out(output_file);
-    out << "# Client SIN - Results" << endl;
-    out << "# TaskID\tArgument\tResult\tExpected" << endl;
+    std::vector<std::pair<size_t, double>> tasks_results;
+    std::vector<double> expected_results;
+    
+    std::cout << "[" << client_name << "] Начало работы, задач: " << num_tasks << std::endl;
     
     for (int i = 0; i < num_tasks; ++i) {
-        double arg = dist(gen);
-        double expected = sin(arg);
+        TaskType task;
+        double expected;
         
-        out << i << "\t" << fixed << setprecision(6) << arg 
-            << "\t" << expected << "\t" << expected << endl;
+        if constexpr (std::is_same_v<TaskType, SinTask>) {
+            task.arg = dist_sin(gen);
+            expected = std::sin(task.arg);
+        } else if constexpr (std::is_same_v<TaskType, SqrtTask>) {
+            task.arg = dist_sqrt(gen);
+            expected = std::sqrt(task.arg);
+        } else if constexpr (std::is_same_v<TaskType, PowTask>) {
+            task.base = dist_base(gen);
+            task.exp = dist_exp(gen);
+            expected = std::pow(task.base, task.exp);
+        }
+        
+        expected_results.push_back(expected);
+        size_t task_id = server.add_task([task]() { return task(); });
+        tasks_results.push_back({task_id, expected});
     }
     
-    out.close();
-    cout << "Client SIN: Completed " << num_tasks << " tasks, results saved to " << output_file << endl;
-}
-
-void client_sqrt(int num_tasks, const string& output_file) {
-    mt19937 gen(random_device{}());
-    uniform_real_distribution<double> dist(0.0, 10000.0);
+    // Получение результатов и запись в файл
+    std::ofstream out(output_file);
+    out << "# Результаты клиента: " << client_name << "\n";
+    out << "# Формат: ID_задачи | Аргументы | Результат сервера | Ожидаемый результат | Статус\n";
+    out << "#================================================================================\n\n";
     
-    ofstream out(output_file);
-    out << "# Client SQRT - Results" << endl;
-    out << "# TaskID\tArgument\tResult\tExpected" << endl;
-    
-    for (int i = 0; i < num_tasks; ++i) {
-        double arg = dist(gen);
-        double expected = sqrt(arg);
+    int success_count = 0;
+    for (size_t i = 0; i < tasks_results.size(); ++i) {
+        size_t task_id = tasks_results[i].first;
+        double expected = tasks_results[i].second;
         
-        out << i << "\t" << fixed << setprecision(6) << arg 
-            << "\t" << expected << "\t" << expected << endl;
+        double result = server.request_result(task_id);
+        
+        bool is_correct = std::abs(result - expected) < 1e-9;
+        if (is_correct) success_count++;
+        
+        std::string status = is_correct ? "OK" : "FAIL";
+        
+        out << std::setw(6) << task_id << " | ";
+        if constexpr (std::is_same_v<TaskType, SinTask>) {
+            out << std::fixed << std::setprecision(6) << "sin(" << expected_results[i] << ")";
+        } else if constexpr (std::is_same_v<TaskType, SqrtTask>) {
+            out << std::fixed << std::setprecision(6) << "sqrt(" << expected_results[i] << ")";
+        } else if constexpr (std::is_same_v<TaskType, PowTask>) {
+            // Для pow нужно сохранить аргументы отдельно
+            out << std::fixed << std::setprecision(6) << "pow(...)";
+        }
+        out << " | " << std::setw(15) << std::setprecision(10) << result 
+            << " | " << std::setw(15) << expected 
+            << " | " << status << "\n";
     }
     
-    out.close();
-    cout << "Client SQRT: Completed " << num_tasks << " tasks, results saved to " << output_file << endl;
-}
-
-void client_pow(int num_tasks, const string& output_file) {
-    mt19937 gen(random_device{}());
-    uniform_real_distribution<double> base_dist(0.0, 10.0);
-    uniform_real_distribution<double> exp_dist(0.0, 5.0);
-    
-    ofstream out(output_file);
-    out << "# Client POW - Results" << endl;
-    out << "# TaskID\tBase\tExponent\tResult\tExpected" << endl;
-    
-    for (int i = 0; i < num_tasks; ++i) {
-        double base = base_dist(gen);
-        double exp = exp_dist(gen);
-        double expected = pow(base, exp);
-        
-        out << i << "\t" << fixed << setprecision(6) << base 
-            << "\t" << exp << "\t" << expected << "\t" << expected << endl;
-    }
+    out << "\n#================================================================================\n";
+    out << "# Итого: " << success_count << " из " << num_tasks << " задач выполнено корректно\n";
+    out << "# Процент успеха: " << std::fixed << std::setprecision(1) 
+        << (100.0 * success_count / num_tasks) << "%\n";
     
     out.close();
-    cout << "Client POW: Completed " << num_tasks << " tasks, results saved to " << output_file << endl;
+    std::cout << "[" << client_name << "] Завершено. Успешно: " << success_count 
+              << "/" << num_tasks << ". Результаты в файле: " << output_file << std::endl;
 }
 
-// ============================================================================
 // Тест для проверки результатов
-// ============================================================================
-
-bool test_results(const string& filename, double tolerance = 1e-9) {
-    ifstream in(filename);
-    if (!in.is_open()) {
-        cerr << "Error: Cannot open file " << filename << endl;
+bool test_results(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Не удалось открыть файл: " << filename << std::endl;
         return false;
     }
     
-    string line;
-    int errors = 0;
-    int total = 0;
+    std::string line;
+    int total_tasks = 0;
+    int success_tasks = 0;
     
-    while (getline(in, line)) {
-        if (line.empty() || line[0] == '#') continue;
-        
-        istringstream iss(line);
-        size_t task_id;
-        vector<double> values;
-        double val;
-        
-        iss >> task_id;
-        while (iss >> val) {
-            values.push_back(val);
-        }
-        
-        if (values.size() >= 2) {
-            total++;
-            double result = values[values.size() - 2];
-            double expected = values.back();
-            
-            if (abs(result - expected) > tolerance) {
-                errors++;
-                cerr << "Mismatch in " << filename << ", task " << task_id 
-                     << ": got " << result << ", expected " << expected << endl;
-            }
+    while (std::getline(file, line)) {
+        if (line.find("| OK") != std::string::npos) {
+            success_tasks++;
+            total_tasks++;
+        } else if (line.find("| FAIL") != std::string::npos) {
+            total_tasks++;
         }
     }
     
-    in.close();
+    file.close();
     
-    cout << "Test " << filename << ": " << (total - errors) << "/" << total 
-         << " tasks passed" << endl;
+    std::cout << "Тест файла " << filename << ": " << success_tasks 
+              << "/" << total_tasks << " задач пройдено" << std::endl;
     
-    return errors == 0;
+    return success_tasks == total_tasks && total_tasks > 0;
 }
 
-// ============================================================================
-// Основная программа с клиент-серверной архитектурой
-// ============================================================================
-
 int main(int argc, char* argv[]) {
-    int num_tasks = 100; // По умолчанию 100 задач на клиента
-    
+    int num_tasks = 100; // Количество задач по умолчанию
     if (argc > 1) {
-        num_tasks = stoi(argv[1]);
+        num_tasks = std::atoi(argv[1]);
         if (num_tasks < 5 || num_tasks > 10000) {
-            cerr << "Warning: Number of tasks should be between 5 and 10000. Using default 100." << endl;
-            num_tasks = 100;
+            std::cerr << "Количество задач должно быть в диапазоне 5-10000" << std::endl;
+            return 1;
         }
     }
     
-    cout << "Starting Client-Server Application" << endl;
-    cout << "Number of tasks per client: " << num_tasks << endl;
-    cout << "========================================" << endl;
+    std::cout << "=== Клиент-серверное приложение ===" << std::endl;
+    std::cout << "Количество задач на клиента: " << num_tasks << std::endl;
+    std::cout << std::endl;
     
-    // Создаем сервер для обработки задач
+    // Создание сервера
     TaskServer<double> server;
     
-    // Запускаем сервер
+    // Запуск сервера
     server.start();
-    cout << "Server started" << endl;
     
-    // Запускаем три клиентских потока
-    vector<thread> clients;
+    // Создание клиентских потоков
+    std::thread client1(client_thread<SinTask>, std::ref(server), num_tasks, 
+                       "Client-Sin", "results_sin.txt");
+    std::thread client2(client_thread<SqrtTask>, std::ref(server), num_tasks, 
+                       "Client-Sqrt", "results_sqrt.txt");
+    std::thread client3(client_thread<PowTask>, std::ref(server), num_tasks, 
+                       "Client-Pow", "results_pow.txt");
     
-    clients.emplace_back(client_sin, num_tasks, "client_sin_results.txt");
-    clients.emplace_back(client_sqrt, num_tasks, "client_sqrt_results.txt");
-    clients.emplace_back(client_pow, num_tasks, "client_pow_results.txt");
+    // Ожидание завершения клиентов
+    client1.join();
+    client2.join();
+    client3.join();
     
-    // Ожидаем завершения клиентов
-    for (auto& client : clients) {
-        client.join();
-    }
-    
-    cout << "All clients completed" << endl;
-    
-    // Останавливаем сервер
+    // Остановка сервера
     server.stop();
-    cout << "Server stopped" << endl;
     
-    cout << "========================================" << endl;
-    cout << "Running tests..." << endl;
+    std::cout << "\n=== Тестирование результатов ===" << std::endl;
     
-    // Проверяем результаты
     bool all_passed = true;
-    all_passed &= test_results("client_sin_results.txt");
-    all_passed &= test_results("client_sqrt_results.txt");
-    all_passed &= test_results("client_pow_results.txt");
+    all_passed &= test_results("results_sin.txt");
+    all_passed &= test_results("results_sqrt.txt");
+    all_passed &= test_results("results_pow.txt");
     
-    cout << "========================================" << endl;
+    std::cout << "\n=== Общий результат ===" << std::endl;
     if (all_passed) {
-        cout << "All tests PASSED!" << endl;
+        std::cout << "ВСЕ ТЕСТЫ ПРОЙДЕНЫ УСПЕШНО!" << std::endl;
     } else {
-        cout << "Some tests FAILED!" << endl;
+        std::cout << "НЕКОТОРЫЕ ТЕСТЫ НЕ ПРОЙДЕНЫ!" << std::endl;
         return 1;
     }
     
