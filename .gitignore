@@ -1,12 +1,28 @@
 ```
 # CMake build artifacts
-build/
-CMakeCache.txt
-CMakeFiles/
+thirdlesson/build/
+thirdlesson/Makefile
+thirdlesson/cmake_install.cmake
+thirdlesson/CMakeCache.txt
+thirdlesson/CMakeFiles/
 
-# Executables
-bin/
+# Executable binaries
+thirdlesson/task1_matrix_vector
+thirdlesson/task2_client_server
+thirdlesson/build/bin/
 
-# Generated result files
-*_results.txt
+# Result files
+thirdlesson/*_results.txt
+thirdlesson/results_*.txt
+thirdlesson/speedup_data.txt
+
+# Generated documents
+thirdlesson/report.pdf.tex
+thirdlesson/report.tex
+
+# Plot script
+thirdlesson/plot_script.gnu
+
+# Speedup graph (binary image file)
+thirdlesson/speedup_graph.png
 ```
