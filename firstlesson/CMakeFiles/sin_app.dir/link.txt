@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/sin_app.dir/first.cpp.o -o sin_app 
