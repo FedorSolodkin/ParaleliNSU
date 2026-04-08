@@ -1,1 +1,1 @@
-(secondlesson/ folder contains source files like .sh scripts and .py files, and a PDF report - these appear to be legitimate project files rather than build artifacts or temporary files that should be ignored)
+Nothing should be ignored based on the provided file changes. The changes consist only of source/config files (.md, .sh) without any build artifacts, dependencies, or temporary files that would warrant adding to .gitignore.
