@@ -1,3 +1,4 @@
+
 ```
 # CMake build artifacts
 thirdlesson/build/
@@ -25,4 +26,11 @@ thirdlesson/plot_script.gnu
 
 # Speedup graph (binary image file)
 thirdlesson/speedup_graph.png
+```
+
+
+bin/
+
+
+*_results.txt
 ```
