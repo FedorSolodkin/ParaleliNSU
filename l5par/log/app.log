@@ -1,0 +1,91 @@
+2026-05-14 13:53:59,486 [ERROR] __main__: Cannot open video: 'video.mp4'
+2026-05-14 13:53:59,486 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:54:05,002 [ERROR] __main__: Cannot open video: 'video.mp4'
+2026-05-14 13:54:05,002 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:54:10,391 [ERROR] __main__: Cannot open video: 'video.mp4'
+2026-05-14 13:54:10,391 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:54:17,048 [ERROR] __main__: Cannot open video: 'video.mp4'
+2026-05-14 13:54:17,048 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:54:23,564 [ERROR] __main__: Cannot open video: 'video.mp4'
+2026-05-14 13:54:23,564 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:54:29,908 [ERROR] __main__: Cannot open video: 'video.mp4'
+2026-05-14 13:54:29,908 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:57:15,783 [INFO] __main__: Video opened: video.mp4 | 1280x720 @ 29.8 fps | 347 frames
+2026-05-14 13:57:15,794 [INFO] __main__: VideoWriter created: _bench_single_1.mp4
+2026-05-14 13:57:15,794 [INFO] __main__: Mode: single | Workers: 1 | Model: yolov8s-pose.pt
+2026-05-14 13:57:53,363 [INFO] __main__: Single-thread processing started
+2026-05-14 13:57:57,969 [INFO] __main__: Single: 30 / 347 frames (6.5 fps)
+2026-05-14 13:58:02,316 [INFO] __main__: Single: 60 / 347 frames (6.7 fps)
+2026-05-14 13:58:06,663 [INFO] __main__: Single: 90 / 347 frames (6.8 fps)
+2026-05-14 13:58:11,098 [INFO] __main__: Single: 120 / 347 frames (6.8 fps)
+2026-05-14 13:58:15,356 [INFO] __main__: Single: 150 / 347 frames (6.8 fps)
+2026-05-14 13:58:19,513 [INFO] __main__: Single: 180 / 347 frames (6.9 fps)
+2026-05-14 13:58:23,833 [INFO] __main__: Single: 210 / 347 frames (6.9 fps)
+2026-05-14 13:58:28,144 [INFO] __main__: Single: 240 / 347 frames (6.9 fps)
+2026-05-14 13:58:32,403 [INFO] __main__: Single: 270 / 347 frames (6.9 fps)
+2026-05-14 13:58:36,637 [INFO] __main__: Single: 300 / 347 frames (6.9 fps)
+2026-05-14 13:58:40,843 [INFO] __main__: Single: 330 / 347 frames (7.0 fps)
+2026-05-14 13:58:43,281 [INFO] __main__: Single-thread done: 347 frames in 49.91 s
+2026-05-14 13:58:43,291 [INFO] __main__: VideoWriter released: _bench_single_1.mp4
+2026-05-14 13:58:43,293 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:58:48,742 [INFO] __main__: Video opened: video.mp4 | 1280x720 @ 29.8 fps | 347 frames
+2026-05-14 13:58:48,742 [INFO] __main__: VideoWriter created: _bench_multi_1.mp4
+2026-05-14 13:58:48,742 [INFO] __main__: Mode: multi | Workers: 1 | Model: yolov8s-pose.pt
+2026-05-14 13:58:48,742 [INFO] __main__: Started 1 worker threads
+2026-05-14 13:58:48,851 [INFO] __main__: Worker started, model loaded in thread worker-0
+2026-05-14 13:59:34,619 [INFO] __main__: All workers done: 347 frames processed in 45.88 s
+2026-05-14 13:59:34,619 [INFO] __main__: Writing frames in original order...
+2026-05-14 13:59:37,173 [INFO] __main__: VideoWriter released: _bench_multi_1.mp4
+2026-05-14 13:59:37,190 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 13:59:42,622 [INFO] __main__: Video opened: video.mp4 | 1280x720 @ 29.8 fps | 347 frames
+2026-05-14 13:59:42,622 [INFO] __main__: VideoWriter created: _bench_multi_2.mp4
+2026-05-14 13:59:42,622 [INFO] __main__: Mode: multi | Workers: 2 | Model: yolov8s-pose.pt
+2026-05-14 13:59:42,622 [INFO] __main__: Started 2 worker threads
+2026-05-14 13:59:42,864 [INFO] __main__: Worker started, model loaded in thread worker-0
+2026-05-14 13:59:42,926 [INFO] __main__: Worker started, model loaded in thread worker-1
+2026-05-14 14:00:20,122 [INFO] __main__: All workers done: 347 frames processed in 37.49 s
+2026-05-14 14:00:20,122 [INFO] __main__: Writing frames in original order...
+2026-05-14 14:00:23,403 [INFO] __main__: VideoWriter released: _bench_multi_2.mp4
+2026-05-14 14:00:23,410 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 14:00:29,773 [INFO] __main__: Video opened: video.mp4 | 1280x720 @ 29.8 fps | 347 frames
+2026-05-14 14:00:29,773 [INFO] __main__: VideoWriter created: _bench_multi_4.mp4
+2026-05-14 14:00:29,773 [INFO] __main__: Mode: multi | Workers: 4 | Model: yolov8s-pose.pt
+2026-05-14 14:00:29,773 [INFO] __main__: Started 4 worker threads
+2026-05-14 14:00:30,236 [INFO] __main__: Worker started, model loaded in thread worker-2
+2026-05-14 14:00:30,267 [INFO] __main__: Worker started, model loaded in thread worker-3
+2026-05-14 14:00:30,287 [INFO] __main__: Worker started, model loaded in thread worker-0
+2026-05-14 14:00:30,287 [INFO] __main__: Worker started, model loaded in thread worker-1
+2026-05-14 14:01:05,258 [INFO] __main__: All workers done: 347 frames processed in 35.48 s
+2026-05-14 14:01:05,258 [INFO] __main__: Writing frames in original order...
+2026-05-14 14:01:07,925 [INFO] __main__: VideoWriter released: _bench_multi_4.mp4
+2026-05-14 14:01:07,930 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 14:01:13,549 [INFO] __main__: Video opened: video.mp4 | 1280x720 @ 29.8 fps | 347 frames
+2026-05-14 14:01:13,567 [INFO] __main__: VideoWriter created: _bench_multi_6.mp4
+2026-05-14 14:01:13,567 [INFO] __main__: Mode: multi | Workers: 6 | Model: yolov8s-pose.pt
+2026-05-14 14:01:13,567 [INFO] __main__: Started 6 worker threads
+2026-05-14 14:01:14,214 [INFO] __main__: Worker started, model loaded in thread worker-4
+2026-05-14 14:01:14,243 [INFO] __main__: Worker started, model loaded in thread worker-1
+2026-05-14 14:01:14,253 [INFO] __main__: Worker started, model loaded in thread worker-5
+2026-05-14 14:01:14,259 [INFO] __main__: Worker started, model loaded in thread worker-3
+2026-05-14 14:01:14,276 [INFO] __main__: Worker started, model loaded in thread worker-2
+2026-05-14 14:01:14,276 [INFO] __main__: Worker started, model loaded in thread worker-0
+2026-05-14 14:01:41,650 [INFO] __main__: All workers done: 347 frames processed in 28.08 s
+2026-05-14 14:01:41,650 [INFO] __main__: Writing frames in original order...
+2026-05-14 14:01:44,304 [INFO] __main__: VideoWriter released: _bench_multi_6.mp4
+2026-05-14 14:01:44,312 [INFO] __main__: VideoReader released: video.mp4
+2026-05-14 14:01:49,837 [INFO] __main__: Video opened: video.mp4 | 1280x720 @ 29.8 fps | 347 frames
+2026-05-14 14:01:49,837 [INFO] __main__: VideoWriter created: _bench_multi_8.mp4
+2026-05-14 14:01:49,837 [INFO] __main__: Mode: multi | Workers: 8 | Model: yolov8s-pose.pt
+2026-05-14 14:01:49,844 [INFO] __main__: Started 8 worker threads
+2026-05-14 14:01:50,595 [INFO] __main__: Worker started, model loaded in thread worker-2
+2026-05-14 14:01:50,618 [INFO] __main__: Worker started, model loaded in thread worker-4
+2026-05-14 14:01:50,618 [INFO] __main__: Worker started, model loaded in thread worker-6
+2026-05-14 14:01:50,618 [INFO] __main__: Worker started, model loaded in thread worker-5
+2026-05-14 14:01:50,634 [INFO] __main__: Worker started, model loaded in thread worker-3
+2026-05-14 14:01:50,634 [INFO] __main__: Worker started, model loaded in thread worker-1
+2026-05-14 14:01:50,650 [INFO] __main__: Worker started, model loaded in thread worker-7
+2026-05-14 14:01:50,665 [INFO] __main__: Worker started, model loaded in thread worker-0
+2026-05-14 14:02:20,870 [INFO] __main__: All workers done: 347 frames processed in 31.03 s
+2026-05-14 14:02:20,870 [INFO] __main__: Writing frames in original order...
+2026-05-14 14:02:23,760 [INFO] __main__: VideoWriter released: _bench_multi_8.mp4
+2026-05-14 14:02:23,760 [INFO] __main__: VideoReader released: video.mp4

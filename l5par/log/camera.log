@@ -1,0 +1,123 @@
+2026-05-14 14:19:20,172 [INFO] __main__: Camera 0 opened
+2026-05-14 14:19:20,173 [INFO] __main__: Started 1 worker threads
+2026-05-14 14:19:20,199 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:19:20,255 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:19:33,367 [INFO] __main__: Quit key pressed
+2026-05-14 14:19:33,466 [INFO] __main__: Worker stopped in thread worker-0
+2026-05-14 14:19:33,787 [INFO] __main__: Camera 0 released
+2026-05-14 14:19:33,789 [INFO] __main__: Shutdown complete
+2026-05-14 14:21:17,467 [INFO] __main__: Camera 0 opened
+2026-05-14 14:21:17,468 [INFO] __main__: Started 1 worker threads
+2026-05-14 14:21:17,490 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:21:17,544 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:21:35,902 [INFO] __main__: Quit key pressed
+2026-05-14 14:21:35,922 [INFO] __main__: Worker stopped in thread worker-0
+2026-05-14 14:21:36,313 [INFO] __main__: Camera 0 released
+2026-05-14 14:21:36,314 [INFO] __main__: Shutdown complete
+2026-05-14 14:23:03,645 [INFO] __main__: Camera 0 opened at 640x480
+2026-05-14 14:23:03,645 [INFO] __main__: Started 1 worker threads
+2026-05-14 14:23:03,677 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:23:03,756 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:23:11,635 [INFO] __main__: Quit key pressed
+2026-05-14 14:23:11,779 [INFO] __main__: Worker stopped in thread worker-0
+2026-05-14 14:23:12,081 [INFO] __main__: Camera 0 released
+2026-05-14 14:23:12,081 [INFO] __main__: Shutdown complete
+2026-05-14 14:29:09,418 [INFO] __main__: Camera 0 opened at 640x480
+2026-05-14 14:29:09,420 [INFO] __main__: Started 4 worker threads
+2026-05-14 14:29:09,466 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:29:09,475 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:29:09,477 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:29:09,866 [INFO] __main__: Worker started in thread worker-1
+2026-05-14 14:29:09,884 [INFO] __main__: Worker started in thread worker-3
+2026-05-14 14:29:09,886 [INFO] __main__: Worker started in thread worker-2
+2026-05-14 14:29:09,888 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:29:21,861 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:29:21,861 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:29:21,862 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:29:21,863 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:29:55,665 [INFO] __main__: Camera 0 opened at 640x480
+2026-05-14 14:29:55,667 [INFO] __main__: Started 4 worker threads
+2026-05-14 14:29:55,683 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:29:55,685 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:29:55,685 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:29:55,981 [INFO] __main__: Worker started in thread worker-2
+2026-05-14 14:29:55,982 [INFO] __main__: Worker started in thread worker-1
+2026-05-14 14:29:55,984 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:29:55,986 [INFO] __main__: Worker started in thread worker-3
+2026-05-14 14:30:07,923 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:30:07,923 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:30:07,924 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:30:07,925 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:30:20,521 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:30:20,521 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:30:20,523 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:30:20,523 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:30:32,856 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:30:32,857 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:30:32,858 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:30:32,858 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:30:45,667 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:30:45,667 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:30:45,669 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:30:45,669 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:30:59,599 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:30:59,599 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:30:59,601 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:30:59,601 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:31:13,109 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:31:13,109 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:31:13,111 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:31:13,111 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:31:26,703 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:31:26,703 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:31:26,705 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:31:26,705 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:31:39,889 [INFO] __main__: Interrupted by user
+2026-05-14 14:31:40,693 [INFO] __main__: Worker stopped in thread worker-0
+2026-05-14 14:31:40,693 [INFO] __main__: Worker stopped in thread worker-2
+2026-05-14 14:31:40,693 [INFO] __main__: Worker stopped in thread worker-3
+2026-05-14 14:31:40,693 [INFO] __main__: Worker stopped in thread worker-1
+2026-05-14 14:31:40,714 [INFO] __main__: Shutdown complete
+2026-05-14 14:32:00,711 [INFO] __main__: Camera 0 opened at 640x480
+2026-05-14 14:32:00,714 [INFO] __main__: Started 4 worker threads
+2026-05-14 14:32:00,768 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:32:00,773 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:32:00,778 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:32:01,181 [INFO] __main__: Worker started in thread worker-1
+2026-05-14 14:32:01,190 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:32:01,200 [INFO] __main__: Worker started in thread worker-2
+2026-05-14 14:32:01,202 [INFO] __main__: Worker started in thread worker-3
+2026-05-14 14:32:13,025 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:32:13,025 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:32:13,026 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:32:13,026 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:32:25,728 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:32:25,729 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:32:25,730 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:32:25,730 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:32:38,957 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:32:38,958 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:32:38,959 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:32:38,959 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:32:52,016 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:32:52,016 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:32:52,018 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:32:52,018 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:33:04,892 [INFO] __main__: Interrupted by user
+2026-05-14 14:33:05,726 [INFO] __main__: Worker stopped in thread worker-1
+2026-05-14 14:33:05,726 [INFO] __main__: Worker stopped in thread worker-0
+2026-05-14 14:33:05,741 [INFO] __main__: Worker stopped in thread worker-2
+2026-05-14 14:33:05,742 [INFO] __main__: Worker stopped in thread worker-3
+2026-05-14 14:33:24,592 [INFO] __main__: Camera 0 opened at 640x480
+2026-05-14 14:33:24,595 [INFO] __main__: Started 4 worker threads
+2026-05-14 14:33:24,627 [INFO] __main__: Streaming started. Press 'q' or ESC to quit.
+2026-05-14 14:33:24,630 [WARNING] __main__: Camera lost (fail 1/3)
+2026-05-14 14:33:24,630 [INFO] __main__: Reconnect attempt 1/3 in 1.0 s...
+2026-05-14 14:33:25,051 [INFO] __main__: Worker started in thread worker-1
+2026-05-14 14:33:25,057 [INFO] __main__: Worker started in thread worker-3
+2026-05-14 14:33:25,061 [INFO] __main__: Worker started in thread worker-2
+2026-05-14 14:33:25,063 [INFO] __main__: Worker started in thread worker-0
+2026-05-14 14:33:39,747 [INFO] __main__: Reconnected to camera 0 at 640x480
+2026-05-14 14:33:39,747 [INFO] __main__: Camera restored on attempt 1
+2026-05-14 14:33:39,748 [WARNING] __main__: Camera lost (fail 2/3)
+2026-05-14 14:33:39,748 [INFO] __main__: Reconnect attempt 2/3 in 1.0 s...

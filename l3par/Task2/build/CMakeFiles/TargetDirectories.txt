@@ -1,0 +1,6 @@
+/mnt/c/paral/l3par/Task2/build/CMakeFiles/main.dir
+/mnt/c/paral/l3par/Task2/build/CMakeFiles/test_results.dir
+/mnt/c/paral/l3par/Task2/build/CMakeFiles/benchmark_container.dir
+/mnt/c/paral/l3par/Task2/build/CMakeFiles/benchmark_sync.dir
+/mnt/c/paral/l3par/Task2/build/CMakeFiles/edit_cache.dir
+/mnt/c/paral/l3par/Task2/build/CMakeFiles/rebuild_cache.dir

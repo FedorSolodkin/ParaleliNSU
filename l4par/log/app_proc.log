@@ -1,0 +1,4 @@
+2026-05-14 13:03:19,479 [INFO] SensorCam: Camera '/dev/video0' opened at 1280x720
+2026-05-14 13:03:19,505 [INFO] WindowImage: Window created at 30.0 fps
+2026-05-14 13:03:19,547 [INFO] __main__: Running (multiprocessing). Press 'q' or ESC to quit.
+2026-05-14 13:03:39,284 [INFO] __main__: Shutdown complete

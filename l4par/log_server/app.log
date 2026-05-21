@@ -1,0 +1,26 @@
+2026-04-21 13:53:15,924 [ERROR] SensorCam: Cannot open camera '/dev/video0'
+2026-04-21 13:53:15,924 [WARNING] __main__: Running without camera — SensorX data only
+2026-04-21 13:53:15,924 [INFO] HeadlessWindow: Headless mode: frames → output  at 30.0 fps
+2026-04-21 13:53:15,925 [INFO] worker.Sensor0: Thread started
+2026-04-21 13:53:15,925 [INFO] worker.Sensor1: Thread started
+2026-04-21 13:53:15,925 [INFO] worker.Sensor2: Thread started
+2026-04-21 13:53:15,926 [INFO] __main__: Running. Press 'q' / ESC to quit (auto-stop in 30.0s).
+2026-04-21 13:53:25,555 [INFO] __main__: Interrupted by user (Ctrl-C)
+2026-04-21 13:53:25,563 [INFO] worker.Sensor0: Thread stopped — Sensor0     produced=   948  dropped=  659  actual_hz=  98.29
+2026-04-21 13:53:25,646 [INFO] worker.Sensor1: Thread stopped — Sensor1     produced=    97  dropped=    1  actual_hz=   9.97
+2026-04-21 13:53:25,936 [INFO] worker.Sensor2: Thread stopped — Sensor2     produced=    10  dropped=    0  actual_hz=   1.00
+2026-04-21 13:53:25,937 [INFO] HeadlessWindow: HeadlessWindow closed after 288 frames
+2026-04-21 13:53:25,937 [INFO] __main__: Shutdown complete
+2026-04-21 13:53:41,814 [ERROR] SensorCam: Cannot open camera '/dev/video0'
+2026-04-21 13:53:41,814 [WARNING] __main__: Running without camera — SensorX data only
+2026-04-21 13:53:41,814 [INFO] HeadlessWindow: Headless mode: frames → output  at 30.0 fps
+2026-04-21 13:53:41,815 [INFO] worker.Sensor0: Thread started
+2026-04-21 13:53:41,815 [INFO] worker.Sensor1: Thread started
+2026-04-21 13:53:41,815 [INFO] worker.Sensor2: Thread started
+2026-04-21 13:53:41,816 [INFO] __main__: Running. Press 'q' / ESC to quit (auto-stop in 30.0s).
+2026-04-21 13:54:11,820 [INFO] __main__: Duration 30.0 s elapsed — stopping
+2026-04-21 13:54:11,825 [INFO] worker.Sensor0: Thread stopped — Sensor0     produced=  2950  dropped= 2053  actual_hz=  98.29
+2026-04-21 13:54:11,847 [INFO] worker.Sensor2: Thread stopped — Sensor2     produced=    30  dropped=    0  actual_hz=   1.00
+2026-04-21 13:54:11,879 [INFO] worker.Sensor1: Thread stopped — Sensor1     produced=   300  dropped=    0  actual_hz=   9.98
+2026-04-21 13:54:11,880 [INFO] HeadlessWindow: HeadlessWindow closed after 898 frames
+2026-04-21 13:54:11,880 [INFO] __main__: Shutdown complete

@@ -1,0 +1,2 @@
+python benchmark.py --video video.mp4 --max-workers 4  
+python benchmark.py --video video.mp4 --max-workers 16 

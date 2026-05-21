@@ -1,0 +1,42 @@
+{
+  "video": "video.mp4",
+  "model": "yolov8s-pose.pt",
+  "single_time": 49.91,
+  "multi_results": [
+    {
+      "workers": 1,
+      "time": 45.88,
+      "speedup": 1.0878,
+      "efficiency": 1.0878,
+      "utility": 1.1834
+    },
+    {
+      "workers": 2,
+      "time": 37.49,
+      "speedup": 1.3313,
+      "efficiency": 0.6656,
+      "utility": 0.8862
+    },
+    {
+      "workers": 4,
+      "time": 35.48,
+      "speedup": 1.4067,
+      "efficiency": 0.3517,
+      "utility": 0.4947
+    },
+    {
+      "workers": 6,
+      "time": 28.08,
+      "speedup": 1.7774,
+      "efficiency": 0.2962,
+      "utility": 0.5265
+    },
+    {
+      "workers": 8,
+      "time": 31.03,
+      "speedup": 1.6084,
+      "efficiency": 0.2011,
+      "utility": 0.3234
+    }
+  ]
+}
